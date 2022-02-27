@@ -35,6 +35,7 @@ Command Line
 
 ::
 
+    $ # print help message
     $ zdbpydra --help
 
 ::
