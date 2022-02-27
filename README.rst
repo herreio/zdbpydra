@@ -29,11 +29,13 @@ Usage Examples
 Command Line
 ~~~~~~~~~~~~
 
-
 ::
 
     $ zdbpydra --id "..."
 
+::
+
+    $ zdbhydra -h
 
 ::
 
