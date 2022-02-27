@@ -1,0 +1,69 @@
+"""
+Command line utilitiy for fetching JSON-LD-formatted PICA data
+from the German Union Catalogue of Serials (ZDB)
+"""
+
+import argparse
+
+from . import title, search, stream, scroll
+from . import utils
+
+LOGLEVEL = 0
+HEADERS = {"User-Agent": "zdbpydra-cli 0.0.0"}
+
+
+def json_output(raw, pretty):
+    if pretty:
+        return utils.json_str_pretty(raw)
+    else:
+        return utils.json_str(raw)
+
+
+def print_raw(raw, pretty):
+    if raw is not None:
+        print(json_output(raw, pretty))
+
+
+def print_result(result, pretty):
+    if result is not None:
+        print_raw(result.raw, pretty)
+
+
+def main():
+    zdbpydra_cli = argparse.ArgumentParser("zdbpydra", description="Fetch JSON-LD-formatted PICA data from the German Union Catalogue of Serials")
+    zdbpydra_cli.add_argument("--id", type=str, help="id of title to fetch (default: None)", default=None)
+    zdbpydra_cli.add_argument("--query", type=str, help="cql-based search query (default: None)", default=None)
+    zdbpydra_cli.add_argument("--scroll", type=bool, help="scroll result set (default: False)", nargs='?', const=True, default=False)
+    zdbpydra_cli.add_argument("--stream", type=bool, help="stream result set (default: False)", nargs='?', const=True, default=False)
+    zdbpydra_cli.add_argument("--pica", type=bool, help="fetch pica data only (default: False)", nargs='?', const=True, default=False)
+    zdbpydra_cli.add_argument("--pretty", type=bool, help="pretty print output (default: False)", nargs='?', const=True, default=False)
+    zdbpydra_args = zdbpydra_cli.parse_args()
+    if zdbpydra_args.id is None and zdbpydra_args.query is None:
+        zdbpydra_cli.print_help()
+        return None
+    if zdbpydra_args.id is not None:
+        result = title(zdbpydra_args.id, pica=zdbpydra_args.pica, headers=HEADERS, loglevel=LOGLEVEL)
+        return print_result(result, zdbpydra_args.pretty)
+    if zdbpydra_args.query is not None:
+        if zdbpydra_args.stream:
+            for serial in stream(zdbpydra_args.query, size=10, page=1, headers={}, loglevel=LOGLEVEL):
+                print_result(serial, False)
+            return None
+        if zdbpydra_args.scroll:
+            result = scroll(zdbpydra_args.query, size=10, page=1, headers=HEADERS, loglevel=LOGLEVEL)
+            result_out = []
+            for serial in result:
+                result_out.append(serial.raw)
+            print_raw(result_out, zdbpydra_args.pretty)
+            return None
+        else:
+            result = search(zdbpydra_args.query)
+            result_out = []
+            for serial in result:
+                result_out.append(serial.raw)
+            print_raw(result_out, zdbpydra_args.pretty)
+            return None
+
+
+if __name__ == '__main__':
+    main()
