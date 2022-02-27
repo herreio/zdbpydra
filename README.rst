@@ -96,3 +96,11 @@ Informations on the PICA-based ZDB-Format can be found in the corresponding
 or in the
 `PICA+/PICA3 concordance <https://zeitschriftendatenbank.github.io/pica3plus/>`_
 (both in german).
+
+Terms
+=====
+
+    All metadata in the German Union Catalogue of Serials is available free of
+    charge for general use under the Creative Commons Zero 1.0 (CC0 1.0) license.
+    Most of the holding data in the ZDB is also freely available. A corresponding
+    tag is incorporated into the data record itself. (`Source <https://www.dnb.de/EN/zdb>`_)
