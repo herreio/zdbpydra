@@ -1,5 +1,5 @@
 """
-Client class for the Hydra API of the German Union Catalogue of Serials (ZDB)
+Client class for the Hydra-based JSON API of the German Union Catalogue of Serials (ZDB)
 
 For more information on the interface, have a look at
 https://zeitschriftendatenbank.de/services/schnittstellen/json-api
