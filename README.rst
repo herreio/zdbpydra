@@ -86,5 +86,5 @@ file.
 Informations on the PICA-based ZDB-Format can be found in the corresponding
 `cataloguing documentation <https://zeitschriftendatenbank.de/erschliessung/zdb-format>`_
 or in the
-`PICA+ PICA3 concordance <https://zeitschriftendatenbank.github.io/pica3plus/>`_
+`PICA+/PICA3 concordance <https://zeitschriftendatenbank.github.io/pica3plus/>`_
 (both in german).
