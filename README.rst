@@ -31,10 +31,10 @@ Command Line
 
 .. code-block:: shell
 
-    # fetch title by id
+    # fetch serial title
     zdbpydra --id "..."
 
-    # query titles
+    # query serial titles (cql-based)
     zdbpydra --query "..."
 
 .. code-block:: shell
