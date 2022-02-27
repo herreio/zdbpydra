@@ -67,7 +67,7 @@ class Hydra:
                             for title in response.member]
 
     def stream(self, query, size=100, page=1, headers={}):
-        total = self.total(query)
+        total = self.total(query, headers=headers)
         if total == 0:
             return
         url = self.address(query, size, page)
