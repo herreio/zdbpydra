@@ -3,7 +3,7 @@ zdbpydra
 ==========
 
 ``zdbpydra`` is a Python package and command line utility that allows to access
-JSON-LD-formatted PICA data of the German Union Catalogue of Serials (ZDB)
+JSON-LD with embedded PICA data from the German Union Catalogue of Serials (ZDB)
 via its Hydra-based API (beta).
 
 Installation
