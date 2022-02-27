@@ -37,15 +37,17 @@ Command Line
 
 ::
 
-    usage: zdbpydra [-h] [--id ID] [--query QUERY] [--pica [PICA]]
-                [--pretty [PRETTY]]
+    usage: zdbpydra [-h] [--id ID] [--query QUERY] [--scroll [SCROLL]]
+                    [--stream [STREAM]] [--pica [PICA]] [--pretty [PRETTY]]
 
-    Fetch JSON-LD-formatted Pica data from the German Union Catalogue of Serials
+    Fetch JSON-LD-formatted PICA data from the German Union Catalogue of Serials
 
     optional arguments:
       -h, --help         show this help message and exit
       --id ID            id of title to fetch (default: None)
       --query QUERY      cql-based search query (default: None)
+      --scroll [SCROLL]  scroll result set (default: False)
+      --stream [STREAM]  stream result set (default: False)
       --pica [PICA]      fetch pica data only (default: False)
       --pretty [PRETTY]  pretty print output (default: False)
 
