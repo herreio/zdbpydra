@@ -31,16 +31,16 @@ Command Line
 
 .. code-block:: shell
 
-    $ # fetch title by id
-    $ zdbpydra --id "..."
+    # fetch title by id
+    zdbpydra --id "..."
 
-    $ # query titles
-    $ zdbpydra --query "..."
+    # query titles
+    zdbpydra --query "..."
 
 .. code-block:: shell
 
-    $ # print help message
-    $ zdbpydra --help
+    # print help message
+    zdbpydra --help
 
 ::
 
