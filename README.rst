@@ -29,10 +29,14 @@ Usage Examples
 Command Line
 ~~~~~~~~~~~~
 
-::
-    $ zdbpydra --id "..."
 
 ::
+
+    $ zdbpydra --id "..."
+
+
+::
+
     usage: zdbpydra [-h] [--id ID] [--query QUERY] [--pica [PICA]]
                 [--pretty [PRETTY]]
 
