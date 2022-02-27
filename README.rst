@@ -35,7 +35,7 @@ Command Line
 
 ::
 
-    $ zdbhydra --help
+    $ zdbpydra --help
 
 ::
 
