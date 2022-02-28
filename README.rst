@@ -68,9 +68,9 @@ Interpreter
     serial = zdbpydra.title("1231031-1")
     # fetch result page for given query
     result_page = zdbpydra.search("psg=ZDB-1-CPO")
-    # fetch complete result set for given query
+    # fetch all result pages for given query
     result_set = zdbpydra.scroll("psg=ZDB-1-CPO")
-    # iterate over complete result set for given query
+    # iterate all result pages for given query
     for serial in zdbpydra.stream("psg=ZDB-1-CPO"):
         print(serial.title)
 
