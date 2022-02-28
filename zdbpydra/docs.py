@@ -107,16 +107,12 @@ class SearchResponseParser(ResponseParser):
         return self._field(name)
 
     @property
-    def view_type(self):
-        return self._field_view("type")
+    def view_first(self):
+        return self._field_view("first")
 
     @property
     def view_next(self):
         return self._field_view("next")
-
-    @property
-    def view_first(self):
-        return self._field_view("first")
 
     @property
     def view_last(self):
