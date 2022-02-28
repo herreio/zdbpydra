@@ -32,10 +32,10 @@ Command Line
 .. code-block:: shell
 
     # fetch serial title
-    zdbpydra --id "..."
+    zdbpydra --id "1231031-1"
 
     # query serial titles (cql-based)
-    zdbpydra --query "..."
+    zdbpydra --query "psg=ZDB-1-CPO"
 
 .. code-block:: shell
 
@@ -65,13 +65,13 @@ Interpreter
 
     import zdbpydra
     # fetch serial title data by id
-    serial = zdbpydra.title("...")
+    serial = zdbpydra.title("1231031-1")
     # fetch result page for given query
-    result_page = zdbpydra.search("")
+    result_page = zdbpydra.search("psg=ZDB-1-CPO")
     # fetch complete result set for given query
-    result_set = zdbpydra.scroll("")
+    result_set = zdbpydra.scroll("psg=ZDB-1-CPO")
     # iterate over complete result set for given query
-    for serial in zdbpydra.stream(""):
+    for serial in zdbpydra.stream("psg=ZDB-1-CPO"):
         print(serial.title)
 
 Background
