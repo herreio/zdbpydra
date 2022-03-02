@@ -3,7 +3,7 @@ zdbpydra
 ==========
 
 ``zdbpydra`` is a Python package and command line utility that allows to access
-JSON-LD with embedded PICA data from the German Union Catalogue of Serials (ZDB)
+JSON-LD data (with PICA+ data embedded) from the German Union Catalogue of Serials (ZDB)
 via its Hydra-based API (beta).
 
 Installation
@@ -47,7 +47,8 @@ Command Line
     usage: zdbpydra [-h] [--id ID] [--query QUERY] [--scroll [SCROLL]]
                     [--stream [STREAM]] [--pica [PICA]] [--pretty [PRETTY]]
 
-    Fetch JSON-LD-formatted PICA data from the German Union Catalogue of Serials
+    Fetch JSON-LD data (with PICA+ data embedded) from the German Union Catalogue
+    of Serials (ZDB)
 
     optional arguments:
       -h, --help         show this help message and exit
@@ -99,6 +100,9 @@ or in the
 
 Terms
 =====
+
+ZDB metadata
+~~~~~~~~~~~~
 
     All metadata in the German Union Catalogue of Serials is available free of
     charge for general use under the Creative Commons Zero 1.0 (CC0 1.0) license.
