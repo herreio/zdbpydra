@@ -65,7 +65,7 @@ Interpreter
 .. code-block:: python
 
     import zdbpydra
-    # fetch serial title data by id
+    # fetch metadata of serial title
     serial = zdbpydra.title("1231031-1")
     # fetch result page for given query
     result_page = zdbpydra.search("psg=ZDB-1-CPO")
