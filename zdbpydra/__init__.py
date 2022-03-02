@@ -1,5 +1,5 @@
 """
-This package allows to access JSON-LD-formatted PICA data
+This package allows to access JSON-LD data (with PICA+ data embedded)
 from the German Union Catalogue of Serials (ZDB)
 """
 

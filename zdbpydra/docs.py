@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Parser classes for JSON-LD formatted PICA data of the German Union Catalogue of Serials (ZDB)
+Parser classes for JSON-LD data (with PICA+ data embedded) retrieved
+from the German Union Catalogue of Serials (ZDB)
 
 For more information on the PICA-based cataloguing format of ZDB, see
 https://zeitschriftendatenbank.github.io/pica3plus/ or

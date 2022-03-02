@@ -1,5 +1,5 @@
 """
-Command line utilitiy for fetching JSON-LD-formatted PICA data
+Command line utilitiy for fetching JSON-LD data (with PICA+ data embedded)
 from the German Union Catalogue of Serials (ZDB)
 """
 
@@ -30,7 +30,7 @@ def print_result(result, pretty):
 
 
 def main():
-    zdbpydra_cli = argparse.ArgumentParser("zdbpydra", description="Fetch JSON-LD-formatted PICA data from the German Union Catalogue of Serials")
+    zdbpydra_cli = argparse.ArgumentParser("zdbpydra", description="Fetch JSON-LD data (with PICA+ data embedded) from the German Union Catalogue of Serials (ZDB)")
     zdbpydra_cli.add_argument("--id", type=str, help="id of title to fetch (default: None)", default=None)
     zdbpydra_cli.add_argument("--query", type=str, help="cql-based search query (default: None)", default=None)
     zdbpydra_cli.add_argument("--scroll", type=bool, help="scroll result set (default: False)", nargs='?', const=True, default=False)
