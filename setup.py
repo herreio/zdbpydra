@@ -10,7 +10,7 @@ setup(
     long_description_content_type="text/x-rst",
     license="GPLv3",
     url="https://github.com/herreio/zbdpydra",
-    packages=["zbdpydra"],
+    packages=["zdbpydra"],
     install_requires=["requests"],
     entry_points={
       'console_scripts': ['zdbpydra = zdbpydra.__main__:main'],
