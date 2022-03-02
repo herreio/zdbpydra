@@ -31,7 +31,7 @@ Command Line
 
 .. code-block:: shell
 
-    # fetch serial title
+    # fetch metadata of serial title
     zdbpydra --id "1231031-1"
 
     # query serial titles (cql-based)
