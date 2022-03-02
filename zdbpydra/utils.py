@@ -44,9 +44,13 @@ def response_ok(response, loglevel=None):
 
 def response_json(response):
     if response_ok(response):
-        response = response.json()
-        if response:
-            return response
+        try:
+            return response.json()
+        except requests.exceptions.JSONDecodeError:
+            logger = get_logger()
+            logger.error("Failed to parse JSON data retrieved from URL {0}".format(response.url))
+            if response.text:
+                logger.error("Found payload: {0}".format(response.text))
 
 
 def json_request(url, headers={}):
