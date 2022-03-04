@@ -34,13 +34,16 @@ Command Line
     # fetch metadata of serial title
     zdbpydra --id "1231031-1"
 
-    # query serial titles (cql-based)
+    # query metadata of serial titles (cql-based)
     zdbpydra --query "psg=ZDB-1-CPO"
 
 .. code-block:: shell
 
     # print help message
     zdbpydra --help
+
+Help Message
+------------
 
 ::
 
@@ -52,7 +55,7 @@ Command Line
 
     optional arguments:
       -h, --help         show this help message and exit
-      --id ID            id of title to fetch (default: None)
+      --id ID            id of serial title (default: None)
       --query QUERY      cql-based search query (default: None)
       --scroll [SCROLL]  scroll result set (default: False)
       --stream [STREAM]  stream result set (default: False)
