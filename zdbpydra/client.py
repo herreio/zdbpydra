@@ -38,7 +38,7 @@ class Hydra:
         response = self._title(id, headers={})
         if response is not None:
             if pica:
-                return response.data__parser
+                return response._parser_data
             return response
 
     def address(self, query, size, page):

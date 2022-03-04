@@ -245,10 +245,14 @@ class TitleResponseParser(ResponseParser):
         return self._field("title")
 
     @property
-    def data__parser(self):
+    def _parser_data(self):
         data = self._field("data")
         if data is not None:
             return PicaParser(data)
+
+    @property
+    def pica(self):
+        return self._parser_data
 
     def _field_pica(self, field):
         data = self.data
