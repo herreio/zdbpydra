@@ -1,3 +1,4 @@
+import re
 import json
 import logging
 import requests
@@ -64,3 +65,10 @@ def json_str(data):
 
 def json_str_pretty(data):
     return json.dumps(data, ensure_ascii=False, indent=2)
+
+
+def clean_blanks(value):
+    if type(value) == str:
+        value = re.sub(r"\s+", " ", value)
+        value = value.strip()
+        return value
