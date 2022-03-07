@@ -357,6 +357,24 @@ class PicaParser(BaseParser):
         return self._subfield_value("005A", "l", unique=True)
 
     @property
+    def zdb_code(self):
+        """
+        017A/0600 – Code-Angaben der ZDB
+
+            $a  Code-Angabe {ad,ag,al,...,wk,wl,zt}
+        """
+        return self._subfield_value("017A", "a", joined=True)
+
+    @property
+    def product_code(self):
+        """
+        017B/0601 – Kennzeichnungsfeld für Nationallizenzen und digitale Sammlungen
+
+            $a  Produktsigel
+        """
+        return self._subfield_value("017B", "a", joined=True)
+
+    @property
     def title(self):
         """
         021A/4000 – Haupttitel, Titelzusätze, Paralleltitel, Verantwortlichkeitsangabe
