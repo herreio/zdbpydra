@@ -352,7 +352,7 @@ class PicaParser(BaseParser):
         """
         005A/2010 – International Standard Serial Number (ISSN)
 
-            $0  ISSN (mit Bindestrich)
+            $l  ISSN-L
         """
         return self._subfield_value("005A", "l", unique=True)
 
