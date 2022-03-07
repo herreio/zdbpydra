@@ -470,7 +470,7 @@ class PicaParser(BaseParser):
         """
         047V/4713 – Angaben zu Open Access, Lizenzen und Rechten
 
-            $c  Benennung des Rechts (Code)
+            $o  Open-Access-Markierung (falls vorhanden wahlweise: "nOA" / "OA")
         """
         return self._subfield_value("047V", "o", unique=True)
 
