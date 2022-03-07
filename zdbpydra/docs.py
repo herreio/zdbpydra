@@ -8,8 +8,8 @@ https://zeitschriftendatenbank.github.io/pica3plus/ or
 https://zeitschriftendatenbank.de/erschliessung/zdb-format (both in german).
 """
 
-import types
 from . import utils
+from typing import Generator
 
 
 class BaseParser:
@@ -307,7 +307,7 @@ class PicaParser(BaseParser):
 
     def _subfield_value(self, name, subname, unique=False, clean=False, joined=False):
         subfields = self._subfields(name)
-        if isinstance(subfields, types.GeneratorType):
+        if isinstance(subfields, Generator):
             if not unique:
                 values = []
             for subfield in subfields:
