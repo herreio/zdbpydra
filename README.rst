@@ -97,12 +97,12 @@ Have a look at the
 and
 `CQL documentation <https://zeitschriftendatenbank.de/services/schnittstellen/hilfe-zur-suche>`_
 (both in german)
-for more informations on using the ZDB JSON interface. For details regarding
+for more information on using the ZDB JSON interface. For details regarding
 the LD schema, see the
 `local context <https://zeitschriftendatenbank.de/api/context/zdb.jsonld>`_
 file.
 
-Informations on the PICA-based ZDB-Format can be found in the corresponding
+Information on the PICA-based ZDB-Format can be found in the corresponding
 `cataloguing documentation <https://zeitschriftendatenbank.de/erschliessung/zdb-format>`_
 or in the
 `PICA+/PICA3 concordance <https://zeitschriftendatenbank.github.io/pica3plus/>`_
