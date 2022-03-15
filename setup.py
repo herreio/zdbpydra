@@ -5,7 +5,7 @@ setup(
     version="0.1.0",
     author="Donatus Herre",
     author_email="donatus.herre@slub-dresden.de",
-    description="",
+    description="ZDB Hydra API Client",
     long_description=open("README.rst").read(),
     long_description_content_type="text/x-rst",
     license="GPLv3",
