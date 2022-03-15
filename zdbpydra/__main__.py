@@ -69,7 +69,8 @@ def main():
     if zdbpydra_args.id is not None:
         result = title(zdbpydra_args.id, pica=zdbpydra_args.pica,
                        headers=HEADERS, loglevel=LOGLEVEL)
-        return print_result(result, zdbpydra_args.pretty)
+        print_result(result, zdbpydra_args.pretty)
+        return None
     if zdbpydra_args.query is not None:
         if zdbpydra_args.stream:
             for serial in stream(zdbpydra_args.query, size=10,
