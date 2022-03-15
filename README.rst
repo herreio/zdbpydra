@@ -26,7 +26,7 @@ Installation
    pip install -e git+https://github.com/herreio/zdbpydra.git#egg=zdbpydra
 
 Usage Examples
-=============
+==============
 
 Command Line
 ~~~~~~~~~~~~
