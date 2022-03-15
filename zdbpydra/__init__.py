@@ -11,28 +11,28 @@ from .docs import PicaParser
 
 
 def context(headers={}, loglevel=0):
-    hydra = Hydra(loglevel=loglevel)
-    return hydra.context(headers=headers)
+    hydra = Hydra(headers=headers, loglevel=loglevel)
+    return hydra.context()
 
 
 def title(id, pica=False, headers={}, loglevel=0):
-    hydra = Hydra(loglevel=loglevel)
-    return hydra.title(id, pica=pica, headers=headers)
+    hydra = Hydra(headers=headers, loglevel=loglevel)
+    return hydra.title(id, pica=pica)
 
 
 def search(query, size=10, page=1, headers={}, loglevel=0):
-    hydra = Hydra(loglevel=loglevel)
-    return hydra.search(query, size=size, page=page, headers={})
+    hydra = Hydra(headers=headers, loglevel=loglevel)
+    return hydra.search(query, size=size, page=page)
 
 
 def scroll(query, size=10, page=1, headers={}, loglevel=0):
-    hydra = Hydra(loglevel=loglevel)
-    return hydra.scroll(query, size=size, page=page, headers=headers)
+    hydra = Hydra(headers=headers, loglevel=loglevel)
+    return hydra.scroll(query, size=size, page=page)
 
 
 def stream(query, size=10, page=1, headers={}, loglevel=0):
-    hydra = Hydra(loglevel=loglevel)
-    return hydra.stream(query, size=size, page=page, headers=headers)
+    hydra = Hydra(headers=headers, loglevel=loglevel)
+    return hydra.stream(query, size=size, page=page)
 
 
 def parse_pica(data):

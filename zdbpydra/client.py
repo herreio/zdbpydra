@@ -14,28 +14,29 @@ from . import utils
 
 class Hydra:
 
-    def __init__(self, loglevel=0):
+    def __init__(self, headers={}, loglevel=0):
+        self.headers = headers
         self.logger = utils.get_logger("zdbpydra", loglevel=loglevel)
         self.LD = "https://zeitschriftendatenbank.de/api/context/zdb.jsonld"
         self.URL = "https://zeitschriftendatenbank.de/api/tit"
 
-    def context(self, headers={}):
-        return utils.json_request(self.LD, headers=headers)
+    def _fetch(self, url):
+        return utils.json_request(url, headers=self.headers)
 
-    def _fetch(self, url, headers={}):
-        return utils.json_request(url, headers=headers)
+    def context(self):
+        return self._fetch(self.LD)
 
-    def _title(self, id, headers={}):
+    def _title(self, id):
         url = "{0}/{1}.jsonld".format(self.URL, id)
-        response = self._fetch(url, headers=headers)
+        response = self._fetch(url)
         if response is not None:
             if "data" in response:  # field is only present if title was found
                 return docs.TitleResponseParser(response)
             else:
                 self.logger.info("Title with id {0} not found!".format(id))
 
-    def title(self, id, pica=False, headers={}):
-        response = self._title(id, headers={})
+    def title(self, id, pica=False):
+        response = self._title(id)
         if response is not None:
             if pica:
                 return response._parser_data
@@ -45,34 +46,34 @@ class Hydra:
         return "{0}.jsonld?q={1}&size={2}&page={3}".format(self.URL,
                                                            query, size, page)
 
-    def total(self, query, headers={}):
+    def total(self, query):
         url = self.address(query, 1, 1)
-        response = self._fetch(url, headers=headers)
+        response = self._fetch(url)
         if response is not None:
             return docs.SearchResponseParser(response).total_items
         return 0
 
-    def _search(self, query, size, page, headers={}):
+    def _search(self, query, size, page):
         url = self.address(query, size, page)
-        response = self._fetch(url, headers=headers)
+        response = self._fetch(url)
         if response is not None:
             return docs.SearchResponseParser(response)
 
-    def search(self, query, size=10, page=1, headers={}):
-        response = self._search(query, size, page, headers=headers)
+    def search(self, query, size=10, page=1):
+        response = self._search(query, size, page)
         if response is not None:
             if type(response.member) == list:
                 if len(response.member) > 0:
                     return [docs.TitleResponseParser(title)
                             for title in response.member]
 
-    def stream(self, query, size=100, page=1, headers={}):
-        total = self.total(query, headers=headers)
+    def stream(self, query, size=100, page=1):
+        total = self.total(query)
         if total == 0:
             return
         url = self.address(query, size, page)
         while url:
-            result = self._fetch(url, headers=headers)
+            result = self._fetch(url)
             if result is not None:
                 result = docs.SearchResponseParser(result)
                 titles = result.member
@@ -83,8 +84,8 @@ class Hydra:
             else:
                 url = None
 
-    def scroll(self, query, size=100, page=1, headers={}):
+    def scroll(self, query, size=100, page=1):
         titles = []
-        for doc in self.stream(query, size=size, page=page, headers=headers):
+        for doc in self.stream(query, size=size, page=page):
             titles.append(doc)
         return titles
