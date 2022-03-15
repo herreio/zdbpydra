@@ -3,6 +3,8 @@ import json
 import logging
 import requests
 
+from . import __version__
+
 
 def get_logger(name="zdbpydra", loglevel=None):
     logger = logging.getLogger(name)
@@ -10,7 +12,8 @@ def get_logger(name="zdbpydra", loglevel=None):
         stream = logging.StreamHandler()
         if loglevel is not None and loglevel != stream.level:
             stream.setLevel(loglevel)
-        stream.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s", "%Y-%m-%d %H:%M:%S"))
+        stream.setFormatter(logging.Formatter(
+            "%(asctime)s [%(levelname)s] %(name)s: %(message)s", "%Y-%m-%d %H:%M:%S"))
         logger.addHandler(stream)
         if loglevel is not None and loglevel != logger.level:
             logger.setLevel(loglevel)
@@ -22,7 +25,7 @@ def get_logger(name="zdbpydra", loglevel=None):
 
 def get_request(url, headers={}):
     if "User-Agent" not in headers:
-        headers["User-Agent"] = "zdbpydra 0.0.0"
+        headers["User-Agent"] = "zdbpydra {0}".format(__version__)
     try:
         return requests.get(url, headers=headers)
     except requests.exceptions.RequestException as err:
@@ -49,7 +52,8 @@ def response_json(response):
             return response.json()
         except requests.exceptions.JSONDecodeError:
             logger = get_logger()
-            logger.error("Failed to parse JSON data retrieved from URL {0}".format(response.url))
+            logger.error(
+                "Failed to parse JSON data retrieved from URL {0}".format(response.url))
             if response.text:
                 logger.error("Found payload: {0}".format(response.text))
 
