@@ -17,17 +17,17 @@ class Hydra:
     def __init__(self, headers={}, loglevel=0):
         self.headers = headers
         self.logger = utils.get_logger("zdbpydra", loglevel=loglevel)
-        self.LD = "https://zeitschriftendatenbank.de/api/context/zdb.jsonld"
-        self.URL = "https://zeitschriftendatenbank.de/api/tit"
+        self.BASE_URL = "https://zeitschriftendatenbank.de/api/tit"
+        self.CONTEXT_URL = "https://zeitschriftendatenbank.de/api/context/zdb.jsonld"
 
     def _fetch(self, url):
         return utils.json_request(url, headers=self.headers)
 
     def context(self):
-        return self._fetch(self.LD)
+        return self._fetch(self.CONTEXT_URL)
 
     def _title(self, id):
-        url = "{0}/{1}.jsonld".format(self.URL, id)
+        url = "{0}/{1}.jsonld".format(self.BASE_URL, id)
         response = self._fetch(url)
         if response is not None:
             if "data" in response:  # field is only present if title was found
@@ -43,7 +43,7 @@ class Hydra:
             return response
 
     def address(self, query, size, page):
-        return "{0}.jsonld?q={1}&size={2}&page={3}".format(self.URL,
+        return "{0}.jsonld?q={1}&size={2}&page={3}".format(self.BASE_URL,
                                                            query, size, page)
 
     def total(self, query):
