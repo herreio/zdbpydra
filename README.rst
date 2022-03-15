@@ -108,8 +108,8 @@ or in the
 `PICA+/PICA3 concordance <https://zeitschriftendatenbank.github.io/pica3plus/>`_
 (both in german).
 
-Terms
-=====
+Usage Terms
+===========
 
 ZDB metadata
 ~~~~~~~~~~~~
