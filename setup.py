@@ -9,7 +9,7 @@ setup(
     long_description=open("README.rst").read(),
     long_description_content_type="text/x-rst",
     license="GPLv3",
-    url="https://github.com/herreio/zbdpydra",
+    url="https://github.com/herreio/zdbpydra",
     packages=["zdbpydra"],
     install_requires=["requests"],
     entry_points={
