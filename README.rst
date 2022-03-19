@@ -1,29 +1,20 @@
-========
-zdbpydra
-========
-
-*Under Development*
+===============
+zdbpydra (beta)
+===============
 
 ``zdbpydra`` is a Python package and command line utility that allows to access
-JSON-LD data (with PICA+ data embedded) from the German Union Catalogue of Serials (ZDB)
-via its Hydra-based API (beta).
+JSON-LD data (with PICA+ data embedded) from the German Union Catalogue of
+Serials (ZDB) via its Hydra-based API (beta).
 
 Installation
 ============
 
-... via SSH
-~~~~~~~~~~~
+... via PyPI
+~~~~~~~~~~~~
 
 .. code-block:: bash
 
-   pip install -e git+ssh://git@github.com/herreio/zdbpydra.git#egg=zdbpydra
-
-... or via HTTPS
-~~~~~~~~~~~~~~~~
-
-.. code-block:: bash
-
-   pip install -e git+https://github.com/herreio/zdbpydra.git#egg=zdbpydra
+   pip install zdbpydra
 
 Usage Examples
 ==============
