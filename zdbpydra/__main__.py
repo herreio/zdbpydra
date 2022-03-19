@@ -1,5 +1,5 @@
 """
-Command line utilitiy for fetching JSON-LD data (with PICA+ data embedded)
+Command line utility for fetching JSON-LD data (with PICA+ data embedded)
 from the German Union Catalogue of Serials (ZDB)
 """
 
