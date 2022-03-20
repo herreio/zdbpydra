@@ -26,12 +26,12 @@ def json_output(raw, pretty):
 
 
 def print_raw(raw, pretty):
-    if raw is not None:
+    if raw and raw is not None:
         print(json_output(raw, pretty))
 
 
 def print_result(result, pretty):
-    if result is not None:
+    if result and result is not None:
         print_raw(result.raw, pretty)
 
 
@@ -69,28 +69,32 @@ def main():
     if zdbpydra_args.id is not None:
         result = title(zdbpydra_args.id, pica=zdbpydra_args.pica,
                        headers=HEADERS, loglevel=LOGLEVEL)
-        print_result(result, zdbpydra_args.pretty)
+        if result:
+            print_result(result, zdbpydra_args.pretty)
         return None
     if zdbpydra_args.query is not None:
         if zdbpydra_args.stream:
             for serial in stream(zdbpydra_args.query, size=10,
                                  page=1, headers={}, loglevel=LOGLEVEL):
-                print_result(serial, False)
+                if serial:
+                    print_result(serial, False)
             return None
         if zdbpydra_args.scroll:
             result = scroll(zdbpydra_args.query, size=10, page=1,
                             headers=HEADERS, loglevel=LOGLEVEL)
-            result_out = []
-            for serial in result:
-                result_out.append(serial.raw)
-            print_raw(result_out, zdbpydra_args.pretty)
+            if result and isinstance(result, list):
+                result_out = []
+                for serial in result:
+                    result_out.append(serial.raw)
+                print_raw(result_out, zdbpydra_args.pretty)
             return None
         else:
             result = search(zdbpydra_args.query)
-            result_out = []
-            for serial in result:
-                result_out.append(serial.raw)
-            print_raw(result_out, zdbpydra_args.pretty)
+            if result and isinstance(result, list):
+                result_out = []
+                for serial in result:
+                    result_out.append(serial.raw)
+                print_raw(result_out, zdbpydra_args.pretty)
             return None
 
 
