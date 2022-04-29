@@ -292,14 +292,10 @@ class PicaParser(BaseParser):
 
     @staticmethod
     def clean(value):
-        return utils.clean_blanks(value)
-
-    @staticmethod
-    def clean_title(value):
         if type(value) == str:
             value = value.replace("¬", "")
             value = value.replace("@", "")
-            return PicaParser.clean(value)
+            return utils.clean_blanks(value)
 
     def _field_value(self, name, clean=False):
         value = self._field(name)
@@ -511,8 +507,7 @@ class PicaParser(BaseParser):
 
             $a  Haupttitel
         """
-        value = self._subfield_value("021A", "a", unique=True)
-        return self.clean_title(value)
+        return self._subfield_value("021A", "a", unique=True, clean=True)
 
     @property
     def title_supplement(self):
@@ -521,8 +516,7 @@ class PicaParser(BaseParser):
 
             $d  Titelzusatz
         """
-        value = self._subfield_value("021A", "d", clean=True, joined=True)
-        return self.clean_title(value)
+        return self._subfield_value("021A", "d", clean=True, joined=True)
 
     @property
     def title_responsibility(self):
