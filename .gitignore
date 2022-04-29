@@ -6,6 +6,8 @@ dev.*
 *-dev.*
 *_dev.*
 
+*.csv
+.~lock*
 *.json
 *.jsonl
 
