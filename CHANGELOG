@@ -4,7 +4,7 @@
 
 0.1.5 [2022-03-20]
 
-- prevent iteration of NoneType in cli
+- prevent iteration of none type in cli
 
 0.1.4 [2022-03-19]
 
