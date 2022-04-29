@@ -1,4 +1,5 @@
 import re
+import csv
 import json
 import logging
 import requests
@@ -76,3 +77,9 @@ def clean_blanks(value):
         value = re.sub(r"\s+", " ", value)
         value = value.strip()
         return value
+
+
+def write_csv(csv_output, csv_path):
+    with open(csv_path, "w", newline="") as csv_file:
+        writer = csv.writer(csv_file, delimiter=',', quoting=csv.QUOTE_NONNUMERIC)
+        writer.writerows(csv_output)

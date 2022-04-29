@@ -267,6 +267,16 @@ class TitleResponseParser(ResponseParser):
             return self._field_pica(name)
         return self._field(name)
 
+    @property
+    def _csv(self):
+        raw = self.raw
+        if raw is not None:
+            return CsvBuilder(raw)
+
+    @property
+    def csv(self):
+        return self._csv
+
 
 class PicaParser(BaseParser):
     """
@@ -500,3 +510,66 @@ class PicaParser(BaseParser):
             $e  DDC-Sachgruppen der ZDB
         """
         return self._subfield_value("045U", "e", joined=True)
+
+
+CSV_HEADER = [
+  "id",
+  "idn",
+  "title",
+  "title_supplement",
+  "title_responsibility",
+  "medium",
+  "issn",
+  "issn_l",
+  "publisher",
+  "publisher_place",
+  "psg",
+  "code",
+  "bbg",
+  "ddc",
+  "access_status",
+  "access_rights",
+  "access_source",
+  "parallel_idn",
+  "parallel_issn",
+  "parallel_bbg",
+  "parallel_type"
+]
+
+
+class CsvBuilder:
+
+    def __init__(self, data):
+        self.header = CSV_HEADER
+        self._source = TitleResponseParser(data)
+
+    @property
+    def row(self):
+        return [
+          self._source.identifier or "",
+          self._source.pica.idn or "",
+          self._source.pica.title or "",
+          self._source.pica.title_supplement or "",
+          self._source.pica.title_responsibility or "",
+          self._source.medium or "",
+          self._source.pica.issn or "",
+          self._source.pica.issn_l or "",
+          self._source.pica.publisher or "",
+          self._source.pica.publisher_place or "",
+          self._source.pica.product_code or "",
+          self._source.pica.zdb_code or "",
+          self._source.pica.bbg or "",
+          self._source.pica.dewey or "",
+          self._source.pica.access_status or "",
+          self._source.pica.access_rights or "",
+          self._source.pica.access_source or "",
+          self._source.pica.parallel_idn or "",
+          self._source.pica.parallel_issn or "",
+          self._source.pica.parallel_bbg or "",
+          self._source.pica.parallel_type or ""
+        ]
+
+    def output(self, header=False):
+        if not header:
+            return [self.row]
+        return [self.header, self.row]

@@ -7,7 +7,7 @@ __author__ = "Donatus Herre <donatus.herre@slub-dresden.de>"
 __version__ = "0.1.5"
 
 from .client import Hydra
-from .docs import PicaParser
+from .docs import PicaParser, CsvBuilder
 
 
 def context(headers={}, loglevel=0):
@@ -37,3 +37,7 @@ def stream(query, size=10, page=1, headers={}, loglevel=0):
 
 def parse_pica(data):
     return PicaParser(data)
+
+
+def build_csv(payload):
+    return CsvBuilder(payload)
