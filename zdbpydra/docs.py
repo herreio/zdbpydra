@@ -286,6 +286,7 @@ class PicaParser(BaseParser):
 
     def __init__(self, data):
         self._delim = "|"
+        self._sub_delim = "~"
         super().__init__(data)
 
     @staticmethod
@@ -312,8 +313,7 @@ class PicaParser(BaseParser):
         fields = self._field(name)
         if isinstance(fields, list):
             for field in fields:
-                for subfield in field:
-                    yield subfield
+                yield field
 
     def _subfield_value(self, name, subname, unique=False, clean=False, joined=False):
         subfields = self._subfields(name)
@@ -321,14 +321,21 @@ class PicaParser(BaseParser):
             if not unique:
                 values = []
             for subfield in subfields:
-                if subname in subfield:
-                    if unique:
-                        if clean:
-                            return PicaParser.clean(subfield[subname])
-                        return subfield[subname]
-                    else:
-                        values.append(subfield[subname] if not clean
-                                      else PicaParser.clean(subfield[subname]))
+                if not unique:
+                    subvalues = []
+                for field in subfield:
+                    if subname in field:
+                        if unique:
+                            if clean:
+                                return PicaParser.clean(field[subname])
+                            return field[subname]
+                        else:
+                            subvalues.append(field[subname] if not clean
+                                             else PicaParser.clean(field[subname]))
+                if joined:
+                    values.append(self._sub_delim.join(subvalues))
+                elif not unique:
+                    values.extend(subvalues)
         if not unique and len(values) > 0:
             if joined:
                 return self._delim.join(values)
@@ -401,7 +408,8 @@ class PicaParser(BaseParser):
 
             $d  Titelzusatz
         """
-        return self._subfield_value("021A", "d", clean=True, joined=True)
+        value = self._subfield_value("021A", "d", clean=True, joined=True)
+        return self.clean_title(value)
 
     @property
     def title_responsibility(self):
@@ -419,7 +427,7 @@ class PicaParser(BaseParser):
 
             $n  Angabe des Verlages
         """
-        return self._subfield_value("033A", "n", unique=True, clean=True)
+        return self._subfield_value("033A", "n", clean=True, joined=True)
 
     @property
     def publisher_place(self):
@@ -428,7 +436,7 @@ class PicaParser(BaseParser):
 
             $p  Erster Erscheinungsort
         """
-        return self._subfield_value("033A", "p", unique=True, clean=True)
+        return self._subfield_value("033A", "p", clean=True, joined=True)
 
     @property
     def parallel_type(self):
