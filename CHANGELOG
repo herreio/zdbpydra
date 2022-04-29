@@ -1,3 +1,7 @@
+0.2.0 [2022-04-29]
+
+- add support for building csv
+
 0.1.5 [2022-03-20]
 
 - prevent iteration of NoneType in cli
