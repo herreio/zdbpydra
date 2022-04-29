@@ -8,6 +8,7 @@ https://zeitschriftendatenbank.github.io/pica3plus/ or
 https://zeitschriftendatenbank.de/erschliessung/zdb-format (both in german).
 """
 
+import datetime
 from . import utils
 from typing import Generator
 
@@ -340,6 +341,118 @@ class PicaParser(BaseParser):
             if joined:
                 return self._delim.join(values)
             return values
+
+    @property
+    def first_entry(self):
+        """
+        001A/0200 – Erfassungskennung und Datum der Ersterfassung
+        """
+        return self._field_value("001A")
+
+    @property
+    def first_entry_code(self):
+        """
+        001A/0200 – Erfassungskennung
+        """
+        return self.first_entry.split(":")[0]
+
+    @property
+    def first_entry_date(self):
+        """
+        001A/0200 – Datum der Ersterfassung
+        """
+        return self.first_entry.split(":")[1]
+
+    @property
+    def first_entry_date_date(self):
+        """
+        001A/0200 – Datum der Ersterfassung (as date object)
+        """
+        first_entry_date = self.first_entry_date
+        return datetime.datetime.strptime(first_entry_date, "%d-%m-%y").date()
+
+    @property
+    def first_entry_date_iso(self):
+        """
+        001A/0200 – Datum der Ersterfassung (in ISO format)
+        """
+        first_entry_date = self.first_entry_date_date
+        return first_entry_date.isoformat()
+
+    @property
+    def latest_change(self):
+        """
+        001B/0210 – Änderungskennung, Datum und Uhrzeit der letzten Änderung
+
+            $0  Pos. 1-4: Änderungskennung
+                Pos. 5: Doppelpunkt
+                Pos. 6-13: Datum der Änderung in der Form: TT-MM-JJ
+        """
+        return self._field_value("001B")
+
+    @property
+    def latest_change_code(self):
+        """
+        001B/0210 – Änderungskennung
+        """
+        return self.latest_change.split(":")[0]
+
+    @property
+    def latest_change_date(self):
+        """
+        001B/0210 – Datum der letzten Änderung
+        """
+        return self.latest_change.split(":")[1]
+
+    @property
+    def latest_change_date_date(self):
+        """
+        001B/0210 – Datum der letzten Änderung (as date object)
+        """
+        latest_change_date = self.latest_change_date
+        return datetime.datetime.strptime(latest_change_date, "%d-%m-%y").date()
+
+    @property
+    def latest_change_date_iso(self):
+        """
+        001B/0210 – Datum der letzten Änderung (in ISO format)
+        """
+        latest_change_date = self.latest_change_date_date
+        return latest_change_date.isoformat()
+
+    @property
+    def latest_change_time(self):
+        """
+        001B/0210 – Uhrzeit der letzten Änderung
+
+            $t  Uhrzeit (HH:MM:SS)
+        """
+        return self._subfield_value("001B", "t", unique=True)
+
+    @property
+    def latest_change_str(self):
+        """
+        001B/0210 – Zeitstempel der letzten Änderung
+        """
+        d = self.latest_change_date
+        t = self.latest_change_time
+        return "{0} {1}".format(d, t)
+
+    @property
+    def latest_change_datetime(self):
+        """
+        001B/0210 – Zeitstempel der letzten Änderung (as datetime object)
+        """
+        change_datetime = self.latest_change_str
+        return datetime.datetime.strptime(change_datetime, "%d-%m-%y %H:%M:%S.%f")
+
+    @property
+    def latest_change_datetime_iso(self):
+        """
+        001B/0210 – Zeitstempel der letzten Änderung (in ISO format)
+        """
+        change_datetime = self.latest_change_datetime
+        return change_datetime.isoformat()
 
     @property
     def bbg(self):
