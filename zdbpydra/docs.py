@@ -329,8 +329,13 @@ class PicaParser(BaseParser):
                         else:
                             subvalues.append(field[subname] if not clean
                                              else PicaParser.clean(field[subname]))
+                    elif subname == 0:
+                        if isinstance(field, list):
+                            subvalues.append(field[subname] if not clean
+                                             else PicaParser.clean(field[subname]))
                 if joined:
-                    values.append(self._sub_delim.join(subvalues))
+                    if len(subvalues) > 0:
+                        values.append(self._sub_delim.join(subvalues))
                 elif not unique:
                     values.extend(subvalues)
         if not unique and len(values) > 0:
@@ -483,6 +488,29 @@ class PicaParser(BaseParser):
         return self._subfield_value("005A", "l", unique=True)
 
     @property
+    def issn_auth(self):
+        """
+        005I/2005 – Autorisierte ISSN des Nationalen ISSN-Zentrums für Deutschland
+
+            $0  (Autorisierte) ISSN (mit Bindestrichen)
+        """
+        return self._field_value("005I")
+
+    @property
+    def id(self):
+        """
+        006Z/2110 – ZDB-Nummer
+        """
+        return self._field_value("006Z")
+
+    @property
+    def language(self):
+        """
+        010@/1500 – Code(s) für Sprache(n) des Textes (nach DIN 2335 / ISO 639-2, 3 Kleinbuchstaben)
+        """
+        return self._subfield_value("010@", "a", joined=True)
+
+    @property
     def zdb_code(self):
         """
         017A/0600 – Code-Angaben der ZDB
@@ -544,6 +572,24 @@ class PicaParser(BaseParser):
             $p  Erster Erscheinungsort
         """
         return self._subfield_value("033A", "p", clean=True, joined=True)
+
+    @property
+    def extend(self):
+        """
+        034D/4060 – Umfang
+
+            $a  Umfang
+        """
+        return self._subfield_value("034D", "a", clean=True, joined=True)
+
+    @property
+    def parallel_id(self):
+        """
+        039D/4243 – Beziehung auf Manifestationsebene – außer Reproduktionen
+
+            $0  ZDB-ID (undokumentiert)
+        """
+        return self._subfield_value("039D", 0, clean=True, joined=True)
 
     @property
     def parallel_type(self):
@@ -645,6 +691,7 @@ CSV_HEADER = [
   "access_status",
   "access_rights",
   "access_source",
+  "parallel_id",
   "parallel_idn",
   "parallel_issn",
   "parallel_bbg",
@@ -678,6 +725,7 @@ class CsvBuilder:
           self._source.pica.access_status or "",
           self._source.pica.access_rights or "",
           self._source.pica.access_source or "",
+          self._source.pica.parallel_id or "",
           self._source.pica.parallel_idn or "",
           self._source.pica.parallel_issn or "",
           self._source.pica.parallel_bbg or "",
