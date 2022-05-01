@@ -503,6 +503,13 @@ class PicaParser(BaseParser):
         """
         return self._field_value("006Z")
 
+    @property
+    def coden(self):
+        """
+        007C/2200 – CODEN
+        """
+        return self._field_value("007C")
+
     def _ident(self, source):
         """
         007I/2242 – Überregionale Identifikationsnummern
