@@ -456,6 +456,50 @@ class PicaParser(BaseParser):
         return change_datetime.isoformat()
 
     @property
+    def status_change(self):
+        """
+        001D/0230 – Kennung bei Statusänderung; Datum (m)
+
+            $0  Pos. 1-4: Erfassungskennung
+                Pos. 5-13: Datum der Ersterfassung in der Form (:TT-MM-JJ)
+
+        Mit der Vergabe des v-Status in Feld 0500 wird die Kennung des
+        Ersterfassers maschinell durch die Kennung der Zentralredaktion (9001)
+        ersetzt. Das Datum wird dabei aktualisiert.
+        """
+        return self._field_value("001D")
+
+    @property
+    def status_change_code(self):
+        """
+        001D/0230 – Erfassungskennung
+        """
+        return self.status_change.split(":")[0]
+
+    @property
+    def status_change_date(self):
+        """
+        001D/0230 – Statusänderungsdatum
+        """
+        return self.status_change.split(":")[1]
+
+    @property
+    def status_change_date_date(self):
+        """
+        001D/0230 – Statusänderungsdatum (as date object)
+        """
+        latest_change_date = self.status_change_date
+        return datetime.datetime.strptime(latest_change_date, "%d-%m-%y").date()
+
+    @property
+    def status_change_date_iso(self):
+        """
+        001D/0230 – Statusänderungsdatum (in ISO format)
+        """
+        latest_change_date = self.status_change_date_date
+        return latest_change_date.isoformat()
+
+    @property
     def bbg(self):
         """
         002@/0500 – Bibliographische Gattung/Status
