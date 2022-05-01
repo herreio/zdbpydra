@@ -458,7 +458,7 @@ class PicaParser(BaseParser):
     @property
     def status_change(self):
         """
-        001D/0230 – Kennung bei Statusänderung; Datum (m)
+        001D/0230 – Kennung bei Statusänderung; Datum
 
             $0  Pos. 1-4: Erfassungskennung
                 Pos. 5-13: Datum der Ersterfassung in der Form (:TT-MM-JJ)
