@@ -503,6 +503,42 @@ class PicaParser(BaseParser):
         """
         return self._field_value("006Z")
 
+    def _ident(self, source):
+        """
+        007I/2242 – Überregionale Identifikationsnummern
+
+            $0  ID-Nummer
+            $S  l = LoC
+            $S  o = OCLC
+        """
+        for field in self._subfields("007I"):
+            provider = None
+            for f in field:
+                if "S" in f:
+                    provider = f["S"]
+            if provider == source:
+                for f in field:
+                    if isinstance(f, list):
+                        return f[0]
+
+    @property
+    def oclc(self):
+        """
+        007I/2242 – Überregionale Identifikationsnummern
+
+            $S  o = OCLC
+        """
+        return self._ident("o")
+
+    @property
+    def loc(self):
+        """
+        007I/2242 – Überregionale Identifikationsnummern
+
+            $S  l = LoC
+        """
+        return self._ident("l")
+
     @property
     def language(self):
         """
