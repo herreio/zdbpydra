@@ -301,18 +301,19 @@ class PicaParser(BaseParser):
         value = self._field(name)
         if repeat:
             values = []
-        if isinstance(value, list) and len(value) > 0:
-            if isinstance(value[0], list) and len(value[0]) > 0:
-                if isinstance(value[0][0], list) and len(value[0][0]) > 0:
-                    if clean:
-                        if not repeat:
-                            return PicaParser.clean(value[0][0][0])
+        if isinstance(value, list):
+            for v in value:
+                if isinstance(v, list) and len(v) > 0:
+                    if isinstance(v[0], list) and len(v[0]) > 0:
+                        if clean:
+                            if not repeat:
+                                return PicaParser.clean(v[0][0])
+                            else:
+                                values.append(PicaParser.clean(v[0][0]))
+                        if repeat:
+                            values.append(v[0][0])
                         else:
-                            values.append(PicaParser.clean(value[0][0][0]))
-                    if repeat:
-                        values.append(value[0][0][0])
-                    else:
-                        return value[0][0][0]
+                            return v[0][0]
         if repeat and len(values) > 0:
             return values
 
@@ -562,6 +563,13 @@ class PicaParser(BaseParser):
         """
         006Y/2199 – Sonstige Standardnummern
         """
+        return self._field_values("006Y")
+
+    @property
+    def id_misc_joined(self):
+        """
+        006Y/2199 – Sonstige Standardnummern
+        """
         return self._field_values("006Y", joined=True)
 
     @property
@@ -578,7 +586,7 @@ class PicaParser(BaseParser):
         """
         return self._field_value("007C")
 
-    def _ident(self, source):
+    def _ident(self, source, joined=False):
         """
         007I/2242 – Überregionale Identifikationsnummern
 
@@ -586,6 +594,7 @@ class PicaParser(BaseParser):
             $S  l = LoC
             $S  o = OCLC
         """
+        ids = []
         for field in self._subfields("007I"):
             provider = None
             for f in field:
@@ -594,7 +603,11 @@ class PicaParser(BaseParser):
             if provider == source:
                 for f in field:
                     if isinstance(f, list):
-                        return f[0]
+                        ids.append(f[0])
+        if len(ids) > 0:
+            if joined:
+                return self._delim.join(ids)
+            return ids
 
     @property
     def oclc(self):
@@ -606,6 +619,15 @@ class PicaParser(BaseParser):
         return self._ident("o")
 
     @property
+    def oclc_joined(self):
+        """
+        007I/2242 – Überregionale Identifikationsnummern
+
+            $S  o = OCLC
+        """
+        return self._ident("o", joined=True)
+
+    @property
     def loc(self):
         """
         007I/2242 – Überregionale Identifikationsnummern
@@ -615,7 +637,23 @@ class PicaParser(BaseParser):
         return self._ident("l")
 
     @property
+    def loc_joined(self):
+        """
+        007I/2242 – Überregionale Identifikationsnummern
+
+            $S  l = LoC
+        """
+        return self._ident("l", joined=True)
+
+    @property
     def language(self):
+        """
+        010@/1500 – Code(s) für Sprache(n) des Textes (nach DIN 2335 / ISO 639-2, 3 Kleinbuchstaben)
+        """
+        return self._subfield_value("010@", "a")
+
+    @property
+    def language_joined(self):
         """
         010@/1500 – Code(s) für Sprache(n) des Textes (nach DIN 2335 / ISO 639-2, 3 Kleinbuchstaben)
         """
@@ -628,10 +666,28 @@ class PicaParser(BaseParser):
 
             $a  Code-Angabe {ad,ag,al,...,wk,wl,zt}
         """
+        return self._subfield_value("017A", "a")
+
+    @property
+    def zdb_code_joined(self):
+        """
+        017A/0600 – Code-Angaben der ZDB
+
+            $a  Code-Angabe {ad,ag,al,...,wk,wl,zt}
+        """
         return self._subfield_value("017A", "a", joined=True)
 
     @property
     def product_code(self):
+        """
+        017B/0601 – Kennzeichnungsfeld für Nationallizenzen und digitale Sammlungen
+
+            $a  Produktsigel
+        """
+        return self._subfield_value("017B", "a")
+
+    @property
+    def product_code_joined(self):
         """
         017B/0601 – Kennzeichnungsfeld für Nationallizenzen und digitale Sammlungen
 
@@ -655,6 +711,15 @@ class PicaParser(BaseParser):
 
             $d  Titelzusatz
         """
+        return self._subfield_value("021A", "d", clean=True)
+
+    @property
+    def title_supplement_joined(self):
+        """
+        021A/4000 – Haupttitel, Titelzusätze, Paralleltitel, Verantwortlichkeitsangabe
+
+            $d  Titelzusatz
+        """
         return self._subfield_value("021A", "d", clean=True, joined=True)
 
     @property
@@ -673,10 +738,28 @@ class PicaParser(BaseParser):
 
             $n  Angabe des Verlages
         """
+        return self._subfield_value("033A", "n", clean=True)
+
+    @property
+    def publisher_joined(self):
+        """
+        033A/4030 – Veröffentlichungsangabe
+
+            $n  Angabe des Verlages
+        """
         return self._subfield_value("033A", "n", clean=True, joined=True)
 
     @property
     def publisher_place(self):
+        """
+        033A/4030 – Veröffentlichungsangabe
+
+            $p  Erster Erscheinungsort
+        """
+        return self._subfield_value("033A", "p", clean=True)
+
+    @property
+    def publisher_place_joined(self):
         """
         033A/4030 – Veröffentlichungsangabe
 
@@ -691,10 +774,28 @@ class PicaParser(BaseParser):
 
             $a  Umfang
         """
+        return self._subfield_value("034D", "a", clean=True)
+
+    @property
+    def extend_joined(self):
+        """
+        034D/4060 – Umfang
+
+            $a  Umfang
+        """
         return self._subfield_value("034D", "a", clean=True, joined=True)
 
     @property
     def parallel_id(self):
+        """
+        039D/4243 – Beziehung auf Manifestationsebene – außer Reproduktionen
+
+            $0  ZDB-ID (undokumentiert)
+        """
+        return self._subfield_value("039D", 0, clean=True)
+
+    @property
+    def parallel_id_joined(self):
         """
         039D/4243 – Beziehung auf Manifestationsebene – außer Reproduktionen
 
@@ -709,6 +810,15 @@ class PicaParser(BaseParser):
 
             $n  Materialart, zeitliche Gültigkeit der Beziehung
         """
+        return self._subfield_value("039D", "n", clean=True)
+
+    @property
+    def parallel_type_joined(self):
+        """
+        039D/4243 – Beziehung auf Manifestationsebene – außer Reproduktionen
+
+            $n  Materialart, zeitliche Gültigkeit der Beziehung
+        """
         return self._subfield_value("039D", "n", clean=True, joined=True)
 
     @property
@@ -718,10 +828,28 @@ class PicaParser(BaseParser):
 
             $g  Bibliographische Gattung/Status (undokumentiert)
         """
+        return self._subfield_value("039D", "g")
+
+    @property
+    def parallel_bbg_joined(self):
+        """
+        039D/4243 – Beziehung auf Manifestationsebene – außer Reproduktionen
+
+            $g  Bibliographische Gattung/Status (undokumentiert)
+        """
         return self._subfield_value("039D", "g", joined=True)
 
     @property
     def parallel_idn(self):
+        """
+        039D/4243 – Beziehung auf Manifestationsebene – außer Reproduktionen
+
+            $9  IDN des zu verknüpfenden Bezugswerkes
+        """
+        return self._subfield_value("039D", "9")
+
+    @property
+    def parallel_idn_joined(self):
         """
         039D/4243 – Beziehung auf Manifestationsebene – außer Reproduktionen
 
@@ -745,7 +873,19 @@ class PicaParser(BaseParser):
         if isinstance(value_i, list):
             value.extend(value_i)
         if len(value) > 0:
-            return self._delim.join(value)
+            return value
+
+    @property
+    def parallel_issn_joined(self):
+        """
+        039D/4243 – Beziehung auf Manifestationsebene – außer Reproduktionen
+
+            $X  ISSN
+            $I  ISSN (undokumentiert)
+        """
+        values = self.parallel_issn
+        if values is not None:
+            return self._delim.join(values)
 
     @property
     def access_source(self):
@@ -754,7 +894,16 @@ class PicaParser(BaseParser):
 
             $b  Herkunft der Angabe
         """
-        return self._subfield_value("047V", "b", unique=True)
+        return self._subfield_value("047V", "b")
+
+    @property
+    def access_source_joined(self):
+        """
+        047V/4713 – Angaben zu Open Access, Lizenzen und Rechten
+
+            $b  Herkunft der Angabe
+        """
+        return self._subfield_value("047V", "b", joined=True)
 
     @property
     def access_rights(self):
@@ -763,7 +912,16 @@ class PicaParser(BaseParser):
 
             $c  Benennung des Rechts (Code)
         """
-        return self._subfield_value("047V", "c", unique=True)
+        return self._subfield_value("047V", "c")
+
+    @property
+    def access_rights_joined(self):
+        """
+        047V/4713 – Angaben zu Open Access, Lizenzen und Rechten
+
+            $c  Benennung des Rechts (Code)
+        """
+        return self._subfield_value("047V", "c", joined=True)
 
     @property
     def access_norm(self):
@@ -772,7 +930,16 @@ class PicaParser(BaseParser):
 
             $g  Grundlage des Rechts, Rechtsnorm
         """
-        return self._subfield_value("047V", "g", unique=True)
+        return self._subfield_value("047V", "g")
+
+    @property
+    def access_norm_joined(self):
+        """
+        047V/4713 – Angaben zu Open Access, Lizenzen und Rechten
+
+            $g  Grundlage des Rechts, Rechtsnorm
+        """
+        return self._subfield_value("047V", "g", joined=True)
 
     @property
     def access_status(self):
@@ -781,7 +948,16 @@ class PicaParser(BaseParser):
 
             $o  Open-Access-Markierung (falls vorhanden wahlweise: "nOA" / "OA")
         """
-        return self._subfield_value("047V", "o", unique=True)
+        return self._subfield_value("047V", "o")
+
+    @property
+    def access_status_joined(self):
+        """
+        047V/4713 – Angaben zu Open Access, Lizenzen und Rechten
+
+            $o  Open-Access-Markierung (falls vorhanden wahlweise: "nOA" / "OA")
+        """
+        return self._subfield_value("047V", "o", joined=True)
 
     @property
     def access_url(self):
@@ -790,10 +966,28 @@ class PicaParser(BaseParser):
 
             $u  URL zu Lizenzbestimmungen
         """
-        return self._subfield_value("047V", "u", unique=True)
+        return self._subfield_value("047V", "u")
+
+    @property
+    def access_url_joined(self):
+        """
+        047V/4713 – Angaben zu Open Access, Lizenzen und Rechten
+
+            $u  URL zu Lizenzbestimmungen
+        """
+        return self._subfield_value("047V", "u", joined=True)
 
     @property
     def dewey(self):
+        """
+        045U/5080 – DDC-Sachgruppen der ZDB
+
+            $e  DDC-Sachgruppen der ZDB
+        """
+        return self._subfield_value("045U", "e")
+
+    @property
+    def dewey_joined(self):
         """
         045U/5080 – DDC-Sachgruppen der ZDB
 
@@ -840,25 +1034,25 @@ class CsvBuilder:
           self._source.identifier or "",
           self._source.pica.idn or "",
           self._source.pica.title or "",
-          self._source.pica.title_supplement or "",
+          self._source.pica.title_supplement_joined or "",
           self._source.pica.title_responsibility or "",
           self._source.medium or "",
           self._source.pica.issn or "",
           self._source.pica.issn_l or "",
-          self._source.pica.publisher or "",
-          self._source.pica.publisher_place or "",
-          self._source.pica.product_code or "",
-          self._source.pica.zdb_code or "",
+          self._source.pica.publisher_joined or "",
+          self._source.pica.publisher_place_joined or "",
+          self._source.pica.product_code_joined or "",
+          self._source.pica.zdb_code_joined or "",
           self._source.pica.bbg or "",
-          self._source.pica.dewey or "",
-          self._source.pica.access_status or "",
-          self._source.pica.access_rights or "",
-          self._source.pica.access_source or "",
-          self._source.pica.parallel_id or "",
-          self._source.pica.parallel_idn or "",
-          self._source.pica.parallel_issn or "",
-          self._source.pica.parallel_bbg or "",
-          self._source.pica.parallel_type or ""
+          self._source.pica.dewey_joined or "",
+          self._source.pica.access_status_joined or "",
+          self._source.pica.access_rights_joined or "",
+          self._source.pica.access_source_joined or "",
+          self._source.pica.parallel_id_joined or "",
+          self._source.pica.parallel_idn_joined or "",
+          self._source.pica.parallel_issn_joined or "",
+          self._source.pica.parallel_bbg_joined or "",
+          self._source.pica.parallel_type_joined or ""
         ]
 
     def output(self, header=False):
