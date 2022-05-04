@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="zdbpydra",
-    version="0.3.0",
+    version="0.3.1",
     author="Donatus Herre",
     author_email="donatus.herre@slub-dresden.de",
     description="ZDB Hydra API Client",

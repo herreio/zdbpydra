@@ -1,3 +1,7 @@
+0.3.1 [2022-05-04]
+
+- fix and refactor parser module
+
 0.3.0 [2022-05-04]
 
 - support to parse values as list
