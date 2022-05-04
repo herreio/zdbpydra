@@ -297,14 +297,31 @@ class PicaParser(BaseParser):
             value = value.replace("@", "")
             return utils.clean_blanks(value)
 
-    def _field_value(self, name, clean=False):
+    def _field_value(self, name, clean=False, repeat=False):
         value = self._field(name)
+        if repeat:
+            values = []
         if isinstance(value, list) and len(value) > 0:
             if isinstance(value[0], list) and len(value[0]) > 0:
                 if isinstance(value[0][0], list) and len(value[0][0]) > 0:
                     if clean:
-                        return PicaParser.clean(value[0][0][0])
-                    return value[0][0][0]
+                        if not repeat:
+                            return PicaParser.clean(value[0][0][0])
+                        else:
+                            values.append(PicaParser.clean(value[0][0][0]))
+                    if repeat:
+                        values.append(value[0][0][0])
+                    else:
+                        return value[0][0][0]
+        if repeat and len(values) > 0:
+            return values
+
+    def _field_values(self, name, clean=False, joined=False):
+        values = self._field_value(name, clean=clean, repeat=True)
+        if isinstance(values, list) and len(values) > 0:
+            if joined:
+                return self._delim.join(values)
+            return values
 
     def _subfields(self, name):
         fields = self._field(name)
@@ -541,6 +558,13 @@ class PicaParser(BaseParser):
         return self._field_value("005I")
 
     @property
+    def id_misc(self):
+        """
+        006Y/2199 – Sonstige Standardnummern
+        """
+        return self._field_values("006Y", joined=True)
+
+    @property
     def id(self):
         """
         006Z/2110 – ZDB-Nummer
@@ -742,6 +766,15 @@ class PicaParser(BaseParser):
         return self._subfield_value("047V", "c", unique=True)
 
     @property
+    def access_norm(self):
+        """
+        047V/4713 – Angaben zu Open Access, Lizenzen und Rechten
+
+            $g  Grundlage des Rechts, Rechtsnorm
+        """
+        return self._subfield_value("047V", "g", unique=True)
+
+    @property
     def access_status(self):
         """
         047V/4713 – Angaben zu Open Access, Lizenzen und Rechten
@@ -749,6 +782,15 @@ class PicaParser(BaseParser):
             $o  Open-Access-Markierung (falls vorhanden wahlweise: "nOA" / "OA")
         """
         return self._subfield_value("047V", "o", unique=True)
+
+    @property
+    def access_url(self):
+        """
+        047V/4713 – Angaben zu Open Access, Lizenzen und Rechten
+
+            $u  URL zu Lizenzbestimmungen
+        """
+        return self._subfield_value("047V", "u", unique=True)
 
     @property
     def dewey(self):
