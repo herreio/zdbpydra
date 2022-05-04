@@ -103,7 +103,7 @@ class SearchResponseParser(ResponseParser):
 
     def _field_view(self, field):
         view = self.view
-        if type(view) == dict and field in view:
+        if isinstance(view, dict) and field in view:
             return view[field]
 
     def get(self, name, view=False):
@@ -260,7 +260,7 @@ class TitleResponseParser(ResponseParser):
 
     def _field_pica(self, field):
         data = self.data
-        if type(data) == dict and field in data:
+        if isinstance(data, dict) and field in data:
             return data[field]
 
     def get(self, name, pica=True):
@@ -292,7 +292,7 @@ class PicaParser(BaseParser):
 
     @staticmethod
     def clean(value):
-        if type(value) == str:
+        if isinstance(value, str):
             value = value.replace("¬", "")
             value = value.replace("@", "")
             return utils.clean_blanks(value)
@@ -308,12 +308,11 @@ class PicaParser(BaseParser):
                         if clean:
                             if not repeat:
                                 return PicaParser.clean(v[0][0])
-                            else:
-                                values.append(PicaParser.clean(v[0][0]))
-                        if repeat:
-                            values.append(v[0][0])
+                            values.append(PicaParser.clean(v[0][0]))
                         else:
-                            return v[0][0]
+                            if not repeat:
+                                return v[0][0]
+                            values.append(v[0][0])
         if repeat and len(values) > 0:
             return values
 
@@ -330,23 +329,21 @@ class PicaParser(BaseParser):
             for field in fields:
                 yield field
 
-    def _subfield_value(self, name, subname, unique=False, clean=False, joined=False):
+    def _subfield_value(self, name, subname, repeat=True, clean=False, joined=False):
         subfields = self._subfields(name)
         if isinstance(subfields, Generator):
-            if not unique:
+            if repeat:
                 values = []
             for subfield in subfields:
-                if not unique:
+                if repeat:
                     subvalues = []
                 for field in subfield:
                     if subname in field:
-                        if unique:
-                            if clean:
-                                return PicaParser.clean(field[subname])
-                            return field[subname]
-                        else:
+                        if repeat:
                             subvalues.append(field[subname] if not clean
                                              else PicaParser.clean(field[subname]))
+                        else:
+                            return field[subname] if not clean else PicaParser.clean(field[subname])
                     elif subname == 0:
                         if isinstance(field, list):
                             subvalues.append(field[subname] if not clean
@@ -354,9 +351,9 @@ class PicaParser(BaseParser):
                 if joined:
                     if len(subvalues) > 0:
                         values.append(self._sub_delim.join(subvalues))
-                elif not unique:
+                elif repeat:
                     values.extend(subvalues)
-        if not unique and len(values) > 0:
+        if repeat and len(values) > 0:
             if joined:
                 return self._delim.join(values)
             return values
@@ -446,7 +443,7 @@ class PicaParser(BaseParser):
 
             $t  Uhrzeit (HH:MM:SS)
         """
-        return self._subfield_value("001B", "t", unique=True)
+        return self._subfield_value("001B", "t", repeat=False)
 
     @property
     def latest_change_str(self):
@@ -547,7 +544,7 @@ class PicaParser(BaseParser):
 
             $l  ISSN-L
         """
-        return self._subfield_value("005A", "l", unique=True)
+        return self._subfield_value("005A", "l", repeat=False)
 
     @property
     def issn_auth(self):
@@ -702,7 +699,7 @@ class PicaParser(BaseParser):
 
             $a  Haupttitel
         """
-        return self._subfield_value("021A", "a", unique=True, clean=True)
+        return self._subfield_value("021A", "a", repeat=False, clean=True)
 
     @property
     def title_supplement(self):
@@ -729,7 +726,7 @@ class PicaParser(BaseParser):
 
             $h  Verantwortlichkeitsangabe
         """
-        return self._subfield_value("021A", "h", unique=True, clean=True)
+        return self._subfield_value("021A", "h", repeat=False, clean=True)
 
     @property
     def publisher(self):
