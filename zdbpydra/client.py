@@ -30,8 +30,8 @@ class Hydra:
         url = "{0}/{1}.jsonld".format(self.BASE_URL, id)
         response = self._fetch(url)
         if response is not None:
-            if "data" in response:  # field is only present if title was found
-                return docs.TitleResponseParser(response)
+            if "totalItems" in response and response["totalItems"] == 1:
+                return docs.TitleResponseParser(response["member"][0])
             else:
                 self.logger.info("Title with id {0} not found!".format(id))
 
