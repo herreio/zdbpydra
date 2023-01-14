@@ -1054,7 +1054,7 @@ class CsvBuilder:
           self._source.pica.title_supplement_joined or "",
           self._source.pica.title_responsibility or "",
           self._source.medium or "",
-          self._source.pica.issn or "",
+          self._source.pica.issn_joined or "",
           self._source.pica.issn_l or "",
           self._source.pica.publisher_joined or "",
           self._source.pica.publisher_place_joined or "",
