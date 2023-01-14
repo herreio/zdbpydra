@@ -538,6 +538,26 @@ class PicaParser(BaseParser):
         return self._field_value("005A")
 
     @property
+    def issn_lazy(self):
+        """
+        005A/2010 – International Standard Serial Number (ISSN)
+
+            $0  ISSN (mit Bindestrich) (wiederholbar)
+        """
+        return self._field_value("005A", repeat=True)
+
+    @property
+    def issn_joined(self):
+        """
+        005A/2010 – International Standard Serial Number (ISSN)
+
+            $0  ISSN (mit Bindestrich) (wiederholbar)
+        """
+        issns = self.issn_lazy
+        if isinstance(issns, list) and len(issns) > 0:
+            return self._delim.join(issns)
+
+    @property
     def issn_l(self):
         """
         005A/2010 – International Standard Serial Number (ISSN)
