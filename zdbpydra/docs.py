@@ -663,6 +663,24 @@ class PicaParser(BaseParser):
         return self._ident("l", joined=True)
 
     @property
+    def url(self):
+        """
+        009Q/4085 – Elektronische Adresse und Zugriffsart für elektronische Ressourcen im Fernzugriff
+
+            $u N URL (Uniform Resource Locator)
+        """
+        return self._subfield_value("009Q", "u")
+
+    @property
+    def url_type(self):
+        """
+        009Q/4085 – Elektronische Adresse und Zugriffsart für elektronische Ressourcen im Fernzugriff
+
+            $x J Interne Bemerkungen
+        """
+        return self._subfield_value("009Q", "x")
+
+    @property
     def language(self):
         """
         010@/1500 – Code(s) für Sprache(n) des Textes (nach DIN 2335 / ISO 639-2, 3 Kleinbuchstaben)
