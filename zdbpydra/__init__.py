@@ -4,7 +4,7 @@ from the German Union Catalogue of Serials (ZDB)
 """
 
 __author__ = "Donatus Herre <donatus.herre@slub-dresden.de>"
-__version__ = "0.3.3"
+__version__ = "0.3.4"
 
 from .client import Hydra
 from .docs import PicaParser, CsvBuilder
